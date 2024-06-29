@@ -6,7 +6,6 @@
 // is added
 
 // const DATA_FROM_FORM = "";
-const BASE_URL = process.env.NOTION_API_DATABASE;
 
 const express = require("express");
 
@@ -15,9 +14,13 @@ const express = require("express");
 // const getDatabase = moduleToFetch.getDatabase;
 // const newEntryToDatabase = moduleToFetch.newEntryToDatabase;
  
-const PORT = process.env.PORT || 8000;
-
+const axios = require('axios');
 const app = express();
+
+
+const PORT = process.env.PORT || 8000;
+const BASE_URL = process.env.NOTION_API_DATABASE;
+
 
 // app.use(express.static("public"));
 // app.use(
@@ -27,9 +30,26 @@ const app = express();
 // );
 
 // CHQ: Reads all data entries from the database (Read)
-app.get(BASE_URL, async (req, res) => {
+app.get('/', async (req, res) => {
   // res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
+BASE_URL
+try {
+    const databaseResult = await axios.get(BASE_URL);
+    const repos = databaseResult.data
+      .map((repo) => ({
+        name: repo.name,
+        url: repo.html_url,
+        description: repo.description,
+        stars: repo.stargazers_count
+      }))
+      .sort((a, b) => b.stars - a.stars);
 
+    res.send(repos);
+  } catch (error) {
+    res.status(400).send('Error while getting list of repositories');
+  }
+
+	
 	const users = JSON.parse(req);
 	res.send(req);
 	  // res.json(req);
