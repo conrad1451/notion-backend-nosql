@@ -5,8 +5,8 @@
 // only once and read through the local data each time a new user
 // is added
 
-const DATA_FROM_FORM = "";
-
+// const DATA_FROM_FORM = "";
+const BASE_URL = NOTION_API_DATABASE;
 
 const express = require("express");
 
@@ -27,8 +27,12 @@ const app = express();
 // );
 
 // CHQ: Reads all data entries from the database (Read)
-app.get("/users", async (req, res) => {
-  res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
+app.get(BASE_URL, async (req, res) => {
+  // res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
+
+	const users = JSON.parse(req);
+	res.send(req);
+	  // res.json(req);
   // const users = await getDatabase();
   // res.json(users);
 });
