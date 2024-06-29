@@ -6,7 +6,7 @@
 // is added
 
 // const DATA_FROM_FORM = "";
-const BASE_URL = NOTION_API_DATABASE;
+const BASE_URL = process.env.NOTION_API_DATABASE;
 
 const express = require("express");
 
