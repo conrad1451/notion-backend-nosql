@@ -6,14 +6,17 @@
 // is added
 
 // const DATA_FROM_FORM = "";
-const BASE_URL = NOTION_API_DATABASE;
+// const BASE_URL = NOTION_API_DATABASE;
+
+const DESTINATION__BACK_TO_DATABASE = "";
 
 const express = require("express");
 
 // Following line is where NodeJS server is coupled to the HTML
-// const moduleToFetch = require(DATA_FROM_FORM);
-// const getDatabase = moduleToFetch.getDatabase;
-// const newEntryToDatabase = moduleToFetch.newEntryToDatabase;
+const moduleToFetch = require("./indexFromOrig");
+// const moduleToFetch = require("./indexFromOrig.js");
+const getDatabase = moduleToFetch.getDatabase;
+const newEntryToDatabase = moduleToFetch.newEntryToDatabase;
  
 const PORT = process.env.PORT || 8000;
 
@@ -26,17 +29,25 @@ const app = express();
 //   }),
 // );
 
-// CHQ: Reads all data entries from the database (Read)
-app.get(BASE_URL, async (req, res) => {
-  // res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
+// BAD ERROR TO REMOVE
+// // CHQ: Reads all data entries from the database (Read)
+// app.get(BASE_URL, async (req, res) => {
+//   // res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
 
-	const users = JSON.parse(req);
-	res.send(req);
-	  // res.json(req);
-  // const users = await getDatabase();
-  // res.json(users);
+// 	const users = JSON.parse(req);
+// 	res.send(req);
+// 	  // res.json(req);
+//   // const users = await getDatabase();
+//   // res.json(users);
+// });
+
+// CHQ: Reads all data entries from the database (Read)
+app.get("/", async (req, res) => {
+  const users = await getDatabase();
+  res.json(users);
 });
 
+// BAD ERROR
 // // CHQ: Posts a new entry to the database (Create)
 // app.post("/submit-form", async (req, res) => {
 //   const name = req.body.name;
@@ -45,6 +56,18 @@ app.get(BASE_URL, async (req, res) => {
 //   res.redirect("/");
 //   res.end();
 // });
+
+// CHQ: Posts a new entry to the database (Create)
+app.post(DESTINATION__BACK_TO_DATABASE, async (req, res) => {
+// app.post("/submit-form", async (req, res) => {
+  const name = req.body.name;
+  const role = req.body.role;
+  await newEntryToDatabase(name, role);
+  // the changes here worked
+  // await newEntryToDatabase("ddd", "dsafdsaf");
+  res.redirect("/");
+  res.end();
+});
 
 // Listening to server at port
 app.listen(PORT, function () { 
