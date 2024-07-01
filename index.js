@@ -5,56 +5,29 @@
 // only once and read through the local data each time a new user
 // is added
 
-// const DATA_FROM_FORM = "";
+// _____________________________________________________________________________________________________ //
 
 const express = require("express");
-
-// Following line is where NodeJS server is coupled to the HTML
-// const moduleToFetch = require(DATA_FROM_FORM);
-// const getDatabase = moduleToFetch.getDatabase;
-// const newEntryToDatabase = moduleToFetch.newEntryToDatabase;
- 
-const axios = require('axios');
-const app = express();
-
-
+const moduleToFetch = require("./databaseModule");
+const getDatabase = moduleToFetch.getDatabase;
+const newEntryToDatabase = moduleToFetch.newEntryToDatabase;
 const PORT = process.env.PORT || 8000;
-const BASE_URL = process.env.NOTION_API_DATABASE;
 
+const app = express();
 
 // app.use(express.static("public"));
 // app.use(
 //   express.urlencoded({
 //     extended: true,
-//   }),
+//   })
 // );
 
-// CHQ: Reads all data entries from the database (Read)
-app.get('/', async (req, res) => {
-  // res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
-try {
-    const databaseResult = await axios.get(BASE_URL);
-    const theRecords = databaseResult.data
-      .map((aRecord) => ({
-        name: aRecord.name,
-        record: aRecord.record
-      }));
-      // .sort((a, b) => b.stars - a.stars);
-
-    res.send(theRecords);
-  } catch (error) {
-    res.status(400).send('Error while getting list of repositories');
-  }
-
-	
-	// const users = JSON.parse(req);
-	// res.send(req);
-	  // res.json(req);
-  // const users = await getDatabase();
-  // res.json(users);
+// CHQ: the endpoint of URL/users returns the database entries in JSON format
+app.get("/users", async (req, res) => {
+  const users = await getDatabase();
+  res.json(users);
 });
 
-// // CHQ: Posts a new entry to the database (Create)
 // app.post("/submit-form", async (req, res) => {
 //   const name = req.body.name;
 //   const role = req.body.role;
@@ -62,6 +35,8 @@ try {
 //   res.redirect("/");
 //   res.end();
 // });
+
+// app.listen(PORT, console.log(`Server started on ${PORT}`)); 
 
 // Listening to server at port
 app.listen(PORT, function () { 
