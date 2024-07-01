@@ -32,26 +32,23 @@ const BASE_URL = process.env.NOTION_API_DATABASE;
 // CHQ: Reads all data entries from the database (Read)
 app.get('/', async (req, res) => {
   // res.send("You are currently on the users page. You should be reading data entries from the Notion database"); 
-BASE_URL
 try {
     const databaseResult = await axios.get(BASE_URL);
-    const repos = databaseResult.data
-      .map((repo) => ({
-        name: repo.name,
-        url: repo.html_url,
-        description: repo.description,
-        stars: repo.stargazers_count
-      }))
-      .sort((a, b) => b.stars - a.stars);
+    const theRecords = databaseResult.data
+      .map((aRecord) => ({
+        name: aRecord.name,
+        record: aRecord.record
+      }));
+      // .sort((a, b) => b.stars - a.stars);
 
-    res.send(repos);
+    res.send(theRecords);
   } catch (error) {
     res.status(400).send('Error while getting list of repositories');
   }
 
 	
-	const users = JSON.parse(req);
-	res.send(req);
+	// const users = JSON.parse(req);
+	// res.send(req);
 	  // res.json(req);
   // const users = await getDatabase();
   // res.json(users);
