@@ -2,7 +2,7 @@
 //      Notion API key. It defines the implementation of getting items 
 //      from the database and writing new content to the database.
 
-require("dotenv").config();
+// require("dotenv").config();
 const { Client } = require("@notionhq/client");
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
