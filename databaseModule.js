@@ -1,4 +1,8 @@
-// require("dotenv").config();
+// CHQ: This is the module that connects to the Notion Database via the 
+//      Notion API key. It defines the implementation of getting items 
+//      from the database and writing new content to the database.
+
+require("dotenv").config();
 const { Client } = require("@notionhq/client");
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
